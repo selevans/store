@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1>Product Details</h1>
+            <div class="card" >
+                <img src="{{ product.imageUrl }}" class="card-img-top" style="width: 50%">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <h3 class="card-title" style="color: #C82829; font-weight: bold"> {{ product.price }}</h3>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-title">Quantity : {{ product.quantity }}</p>
+                    <a href="#" class="btn btn-success">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

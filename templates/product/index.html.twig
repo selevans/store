@@ -22,7 +22,7 @@
                         <td>{{product.price}}</td>
                         <td>{{product.quantity}}</td>
                         <td><img src="{{product.imageUrl}}" width="25%" ></td>
-                        <td><a href="{{ path('product.show({{product.id}})') }}"><button type="button" class="btn btn-warning btn-sm">Show</button></a></td>
+                        <td><a href="{{ path('product.show',  { 'id': product.id }) }}"><button type="button" class="btn btn-warning btn-sm">Show</button></a></td>
                         <td><button type="button" class="btn btn-primary btn-sm">Edit</button></td>
                         <td><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
                     </tr>

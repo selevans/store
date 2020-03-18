@@ -31,12 +31,19 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("product/show{id}",name="product.show" ,methods={"GET","HEAD"})
+     * @Route("product/show/{id}",name="product.show" ,requirements={"id": "\d+"}, methods={"GET","HEAD"})
      * @param $id
      * @return Response
      */
     public function show($id){
-        return $this->render('product/add.html.twig');
+        $products = $this->session->get('products');
+        $product = [];
+        foreach ($products as $p) {
+            if($p->getId() == $id){
+                $product = $p;
+            }
+        }
+        return $this->render('product/show.html.twig',['product' => $product]);
     }
 
 
