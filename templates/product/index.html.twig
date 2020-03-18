@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1>Product List</h1>
+            <a href="{{ path('product.add') }}">  <button type="button" class="btn btn-success" style="float: right; margin-top: -50px" >Add a New Product </button> </a>
+           <table class="table table-light">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Image</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for product in products %}
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td><img src="{{product.imageUrl}}" width="25%" ></td>
+                        <td><a href="{{ path('product.show({{product.id}})') }}"><button type="button" class="btn btn-warning btn-sm">Show</button></a></td>
+                        <td><button type="button" class="btn btn-primary btn-sm">Edit</button></td>
+                        <td><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+{% endblock %}
