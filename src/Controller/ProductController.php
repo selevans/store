@@ -55,7 +55,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("product/persist",name="product.persist")
+     * @Route("product/persist",name="product.persist",methods={"POST"})
      * @param Request $request
      * @return RedirectResponse
      */
@@ -64,30 +64,33 @@ class ProductController extends AbstractController
             if($this->session->has('products')){
                 $products = $this->session->get('products');
                 $products[] = new Product(end($products)->getId()+1, $request->get('name'), $request->get('price'), $request->get('quantity'), $request->get('description'), $request->get('image'), date("d/m/Y"));
-                $this->session->set('products', $products);
+
             }else {
                 $products[] = new Product(1, $request->get('name'), $request->get('price'), $request->get('quantity'), $request->get('description'), $request->get('image'), date("d/m/Y"));
-                $this->session->set('products', $products);
+
             }
+            $this->session->set('products', $products);
+            $this->addFlash('add', 'The product is added successfully !');
         }
         return $this->redirectToRoute('product.index');
     }
 
     /**
-     * @Route("product/edit/{id}",name="product.edit")
-     * @param $id
+     * @Route("product/edit",name="product.edit")
+     * @param Request $request
      * @return Response
      */
-    public function edit($id){
-        $products = $this->session->get('products');
-        $product = [];
-        foreach ($products as $p) {
-            if ($p->getId() == $id){
-                $product = $p;
+    public function edit(Request $request){
+        if ($request->getMethod() === "POST"){
+            $products = $this->session->get('products');
+            $product = [];
+            foreach ($products as $p) {
+                if ($p->getId() == $request->get('id')){
+                    $product = $p;
+                }
             }
+            return $this->render('product/edit.html.twig',['product' => $product]);
         }
-
-        return $this->render('product/edit.html.twig',['product' => $product]);
     }
 
     /**
@@ -106,9 +109,28 @@ class ProductController extends AbstractController
                         $p->setDescription($request->get('description'));
                         $p->setImageUrl($request->get('image'));
                         $this->session->set('products', $products);
+                        $this->addFlash('success', 'The product is updated successfully !');
                 }
             }
         }
+        return $this->redirectToRoute('product.index');
+    }
+
+    /**
+     * @Route("product/delete/{id}",name="product.delete")
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function delete($id)
+    {
+        $products = $this->session->get('products');
+        foreach ($products as $key => $product) {
+            if ($product->getId() == $id){
+                unset($products[$key]);
+                $this->addFlash('danger', 'the product is deleted !');
+            }
+        }
+        $this->session->set('products', $products);
         return $this->redirectToRoute('product.index');
     }
 }

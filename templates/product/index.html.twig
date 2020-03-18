@@ -1,12 +1,37 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-
     <main role="main" class="container">
         <div class="jumbotron">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('add') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
             <h1>Product List</h1>
             <a href="{{ path('product.add') }}">  <button type="button" class="btn btn-success" style="float: right; margin-top: -50px" >Add a New Product </button> </a>
-           <table class="table table-light">
+           <table class="table table-light table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -21,10 +46,15 @@
                         <td>{{product.name}}</td>
                         <td>{{product.price}}</td>
                         <td>{{product.quantity}}</td>
-                        <td><img src="{{product.imageUrl}}" width="25%" ></td>
+                        <td><img src="{{product.imageUrl}}" width="30%" ></td>
                         <td><a href="{{ path('product.show',  { 'id': product.id }) }}"><button type="button" class="btn btn-warning btn-sm">Show</button></a></td>
-                        <td><a href="{{ path('product.edit',  { 'id': product.id }) }}"><button type="button" class="btn btn-primary btn-sm">Edit</button></a></td>
-                        <td><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
+                        <form method="POST" action="{{ path('product.edit')}}">
+                            <input type="hidden" class="form-control"  name="id" value="{{ product.id }}">
+                            <td><button type="submit" class="btn btn-primary btn-sm">Edit</button></td>
+                        </form>
+                        <form method="POST" action="{{ path('product.delete', {'id': product.id})}}">
+                            <td><button type="submit" class="btn btn-danger btn-sm">Delete</button></td>
+                        </form>
                     </tr>
                 {% endfor %}
                 </tbody>
