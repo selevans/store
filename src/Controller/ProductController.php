@@ -74,9 +74,41 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("product/edit",name="product.edit")
+     * @Route("product/edit/{id}",name="product.edit")
+     * @param $id
+     * @return Response
      */
-    public function edit(){
-        return $this->render('product/edit.html.twig');
+    public function edit($id){
+        $products = $this->session->get('products');
+        $product = [];
+        foreach ($products as $p) {
+            if ($p->getId() == $id){
+                $product = $p;
+            }
+        }
+
+        return $this->render('product/edit.html.twig',['product' => $product]);
+    }
+
+    /**
+     * @Route("product/update",name="product.update")
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function update(Request $request){
+        if($request->getMethod() === "POST"){
+            $products = $this->session->get('products');
+            foreach ($products as $p) {
+                if ($p->getId() == $request->get('id')){
+                        $p->setName($request->get('name'));
+                        $p->setPrice($request->get('price'));
+                        $p->setQuantity($request->get('quantity'));
+                        $p->setDescription($request->get('description'));
+                        $p->setImageUrl($request->get('image'));
+                        $this->session->set('products', $products);
+                }
+            }
+        }
+        return $this->redirectToRoute('product.index');
     }
 }
