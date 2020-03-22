@@ -1,32 +1,13 @@
-{% extends "base.html.twig" %}
-{% block content %}
-    <main role="main" class="container">
-        <h1>Edit Product</h1>
-        <form method="POST" action="{{ path('product.update')}}">
-            <input type="hidden" class="form-control"  name="id" value="{{ product.id }}">
-            <div class="form-group">
-                <label for="usr">Name:</label>
-                <input type="text" class="form-control" name="name" value="{{ product.name }}">
-            </div>
-            <div class="form-group">
-                <label>Price:</label>
-                <input type="text" class="form-control" name="price" value="{{ product.price }}">
-            </div>
-            <div class="form-group">
-                <label>Quantity:</label>
-                <input type="text" class="form-control"  name="quantity" value="{{ product.quantity }}">
-            </div>
-            <div class="form-group">
-                <label for="comment">Description:</label>
-                <textarea class="form-control" rows="3" id="comment" name="description">{{ product.description }}</textarea>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="price">Image </label>
-                <input type="url" class="form-control" id="image" name="image"  value="{{ product.imageUrl }}">
+{% extends 'base.html.twig' %}
 
-            </div>
-            <hr>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </main>
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+    <h1>Edit Product</h1>
+
+    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('product_index') }}">back to list</a>
+
+    {{ include('product/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,65 +1,46 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block content %}
-    <main role="main" class="container">
-        <div class="jumbotron">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
+{% block title %}Product index{% endblock %}
 
-            {% for message in app.flashes('add') %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
+{% block body %}
+    <h1>Product index</h1>
 
-            {% for message in app.flashes('danger') %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-            <h1>Product List</h1>
-            <a href="{{ path('product.add') }}">  <button type="button" class="btn btn-success" style="float: right; margin-top: -50px" >Add a New Product </button> </a>
-           <table class="table table-light table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Image</th>
-                </tr>
-                </thead>
-                <tbody>
-                {%for product in products %}
-                    <tr>
-                        <td>{{product.name}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.quantity}}</td>
-                        <td><img src="{{product.imageUrl}}" width="30%" ></td>
-                        <td><a href="{{ path('product.show',  { 'id': product.id }) }}"><button type="button" class="btn btn-warning btn-sm">Show</button></a></td>
-                        <form method="POST" action="{{ path('product.edit')}}">
-                            <input type="hidden" class="form-control"  name="id" value="{{ product.id }}">
-                            <td><button type="submit" class="btn btn-primary btn-sm">Edit</button></td>
-                        </form>
-                        <form method="POST" action="{{ path('product.delete', {'id': product.id})}}">
-                            <td><button type="submit" class="btn btn-danger btn-sm">Delete</button></td>
-                        </form>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </main>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>ImageURL</th>
+                <th>CreateAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.description }}</td>
+                <td><img src="{{ product.imageURL }}" style="height: 50%"></td>
+                <td>{{ product.createAt ? product.createAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary"><a href="{{ path('product_show', {'id': product.id}) }}">show</a></button>
 
+                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('product_new') }}">Create new</a>
 {% endblock %}
