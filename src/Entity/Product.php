@@ -1,150 +1,125 @@
 <?php
+
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ */
 class Product
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $name;
+
+    /**
+     * @ORM\Column(type="float")
+     */
     private $price;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $quantity;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $description;
-    private $imageUrl;
-    private $createdAt;
 
     /**
-     * Product constructor.
-     * @param $id
-     * @param $name
-     * @param $price
-     * @param $quantity
-     * @param $description
-     * @param $imageUrl
-     * @param $createdAt
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    public function __construct($id, $name, $price, $quantity, $description, $imageUrl, $createdAt)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->price = $price;
-        $this->quantity = $quantity;
-        $this->description = $description;
-        $this->imageUrl = $imageUrl;
-        $this->createdAt = $createdAt;
-    }
+    private $imageURL;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="datetime")
      */
-    public function getId()
+    private $createAt;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPrice()
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    /**
-     * @param mixed $price
-     */
-    public function setPrice($price)
+    public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQuantity()
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param mixed $quantity
-     */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getImageUrl()
+    public function getImageURL(): ?string
     {
-        return $this->imageUrl;
+        return $this->imageURL;
     }
 
-    /**
-     * @param mixed $imageUrl
-     */
-    public function setImageUrl($imageUrl)
+    public function setImageURL(?string $imageURL): self
     {
-        $this->imageUrl = $imageUrl;
+        $this->imageURL = $imageURL;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->createAt;
     }
 
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt)
+    public function setCreateAt(\DateTimeInterface $createAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->createAt = $createAt;
+
+        return $this;
     }
-
-
-
-
 }
