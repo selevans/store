@@ -3,33 +3,37 @@
 {% block title %}CommandDetail index{% endblock %}
 
 {% block body %}
-    <h1>CommandDetail index</h1>
+    <div class="container">
+        <h1>Command details index</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table">
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Quantity</th>
+                <th>Product</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for command_detail in command_details %}
-            <tr>
-                <td>{{ command_detail.id }}</td>
-                <td>{{ command_detail.quantity }}</td>
-                <td>
-                    <a href="{{ path('command_detail_show', {'id': command_detail.id}) }}">show</a>
-                    <a href="{{ path('command_detail_edit', {'id': command_detail.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for command_detail in command_details %}
+                <tr>
+                    <td>{{ command_detail.id }}</td>
+                    <td>{{ command_detail.quantity }}</td>
+                    <td>{{ command_detail.product }}</td>
+                    <td>
+                        <a href="{{ path('command_detail_show', {'id': command_detail.id}) }}">show</a>
+                        <a href="{{ path('command_detail_edit', {'id': command_detail.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('command_detail_new') }}">Create new</a>
+        <a href="{{ path('command_detail_new') }}">Create new</a>
+    </div>
 {% endblock %}

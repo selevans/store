@@ -75,4 +75,5 @@ class CommandDetail
 
         return $this;
     }
+
 }

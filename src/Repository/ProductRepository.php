@@ -27,6 +27,14 @@ class ProductRepository extends ServiceEntityRepository
         return $products->getResult();
     }
 
+    public function updateStock($id, $number){
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('UPDATE App\Entity\Product p  SET p.quantity =?1 WHERE p.id = ?2');
+        $query->setParameter(1,$number);
+        $query->setParameter(2,$id);
+        return $query->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

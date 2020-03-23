@@ -3,18 +3,31 @@
 namespace App\Controller;
 
 use App\Entity\CommandDetail;
+use App\Entity\Product;
+use App\Entity\Command;
 use App\Form\CommandDetailType;
 use App\Repository\CommandDetailRepository;
+use App\Repository\CommandRepository;
+use App\Repository\ProductRepository;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Controller\CommandController;
 
 /**
- * @Route("/command/detail")
+ * @Route("/details")
  */
 class CommandDetailController extends AbstractController
 {
+    private $session;
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("/", name="command_detail_index", methods={"GET"})
      */
@@ -23,6 +36,38 @@ class CommandDetailController extends AbstractController
         return $this->render('command_detail/index.html.twig', [
             'command_details' => $commandDetailRepository->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/add", name="command_detail_add", methods={"GET","POST"})
+     */
+    public function addOrderDetail(Request $request)
+    {
+        $commanddetail = new CommandDetail();
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('App:Product')->findOneBy([
+            'id' => $request->get("productID")
+        ]);
+        if ($this->session->get("commandId") == null) {
+            // probably here I should add this part in the repository or add a service :)
+            $command = new Command();
+            $command->setCreateAt(new \DateTime());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($command);
+            $entityManager->flush();
+            $this->session->set('commandId',$command->getId());
+        }
+        $command = $em->getRepository('App:Command')->findOneBy([
+            'id' => $this->session->get("commandId")
+        ]);
+        $commanddetail->setCommand($command);
+        $commanddetail->setProduct($product);
+        $commanddetail->setQuantity($request->get("CommandQuantity"));
+        $em->persist($commanddetail);
+        $em->flush();
+        $stock= $product->getQuantity() - $request->get("CommandQuantity");
+        $em->getRepository('App:Product')->updateStock($request->get("productID"),$stock);
+        return $this->redirectToRoute('product_index');
     }
 
     /**
@@ -48,6 +93,7 @@ class CommandDetailController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="command_detail_show", methods={"GET"})
      */
@@ -57,6 +103,7 @@ class CommandDetailController extends AbstractController
             'command_detail' => $commandDetail,
         ]);
     }
+
 
     /**
      * @Route("/{id}/edit", name="command_detail_edit", methods={"GET","POST"})
@@ -78,6 +125,8 @@ class CommandDetailController extends AbstractController
         ]);
     }
 
+
+
     /**
      * @Route("/{id}", name="command_detail_delete", methods={"DELETE"})
      */
@@ -91,4 +140,6 @@ class CommandDetailController extends AbstractController
 
         return $this->redirectToRoute('command_detail_index');
     }
+
+
 }

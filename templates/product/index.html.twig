@@ -12,6 +12,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>ImageURL</th>
                 <th>actions</th>
             </tr>
@@ -22,11 +23,21 @@
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
                     <td><img src="{{ product.imageURL }}" style="height: 50%"></td>
                     <td>
                         <a href="{{ path('product_show', {'id': product.id}) }}"><button class="btn btn-warning btn-sm"> Show </button></a>
 
                         <a href="{{ path('product_edit', {'id': product.id}) }}"><button class="btn btn-success btn-sm"> Edit </button></a>
+                        {% if product.quantity > 0 %}
+                        <form method="POST" action="{{path("command_detail_add")}}" style="display: inline-flex">
+                            <input type="hidden" value="{{product.id}}" name="productID"/>
+                            <input type="number" value="1" min="0"  max="{{ product.quantity }}" id="CommandQuantity" name="CommandQuantity" style="width: 3em;"/>
+                            <input class="btn btn-sm" type="submit" value="Order"/>
+                        </form>
+                        {% else %}
+                            <p style="font-weight: bold; color: darkred; display: inline-flex;"> Sold Out</p>
+                         {% endif %}
                     </td>
                 </tr>
             {% else %}
