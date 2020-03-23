@@ -9,12 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route("/command")
  */
 class CommandController extends AbstractController
 {
+
+    private $session;
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("/", name="command_index", methods={"GET"})
      */
@@ -23,6 +31,21 @@ class CommandController extends AbstractController
         return $this->render('command/index.html.twig', [
             'commands' => $commandRepository->findAll(),
         ]);
+    }
+
+
+    /**
+     * @Route("/add", name="command_add", methods={"GET","POST"})
+     */
+    public function addCommand(): Response
+    {
+        $command = new Command();
+        $command->setCreateAt(new \DateTime());
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($command);
+        $entityManager->flush();
+        $this->session->set('commandId',$command->getId());
+        return $this->redirectToRoute('product_index');
     }
 
     /**
@@ -91,4 +114,5 @@ class CommandController extends AbstractController
 
         return $this->redirectToRoute('command_index');
     }
+
 }

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CommandDetail{% endblock %}
+
+{% block body %}
+    <h1>CommandDetail</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ command_detail.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ command_detail.quantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('command_detail_index') }}">back to list</a>
+
+    <a href="{{ path('command_detail_edit', {'id': command_detail.id}) }}">edit</a>
+
+    {{ include('command_detail/_delete_form.html.twig') }}
+{% endblock %}
