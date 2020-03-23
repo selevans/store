@@ -10,4 +10,19 @@
         </div>
     </main>
 
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h3>Latest Added Products</h3>
+            {% for product in products %}
+            <div class="card" style="display: inline-flex; margin: 40px;">
+                <img src="{{ product.imageURL }}" class="card-img-top">
+                <div class="card-body">
+                    <a href="{{ path('product_show', {'id': product.id}) }}" style="text-decoration: none"><h5 class="card-title" style="font-weight: bold">{{ product.name }} </h5></a>
+                    <h3 class="card-title" style="color: darkblue; font-weight: bold"> {{ product.price }} $</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
 {% endblock %}
