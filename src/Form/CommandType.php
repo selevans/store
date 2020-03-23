@@ -2,24 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\command;
+use App\Entity\Command;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class CommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderAt')
+            ->add('createAt')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => command::class,
+            'data_class' => Command::class,
         ]);
     }
 }
