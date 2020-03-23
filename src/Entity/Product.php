@@ -50,13 +50,13 @@ class Product
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderDetail", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\CommandDetail", mappedBy="product")
      */
-    private $orderdetail;
+    private $commanddetail;
 
     public function __construct()
     {
-        $this->orderdetail = new ArrayCollection();
+        $this->commanddetail = new ArrayCollection();
     }
 
 
@@ -138,35 +138,34 @@ class Product
     }
 
     /**
-     * @return Collection|OrderDetail[]
+     * @return Collection|CommandDetail[]
      */
-    public function getOrderdetail(): Collection
+    public function getCommanddetail(): Collection
     {
-        return $this->orderdetail;
+        return $this->commanddetail;
     }
 
-    public function addOrderdetail(OrderDetail $orderdetail): self
+    public function addCommanddetail(CommandDetail $commanddetail): self
     {
-        if (!$this->orderdetail->contains($orderdetail)) {
-            $this->orderdetail[] = $orderdetail;
-            $orderdetail->setProduct($this);
+        if (!$this->commanddetail->contains($commanddetail)) {
+            $this->commanddetail[] = $commanddetail;
+            $commanddetail->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrderdetail(OrderDetail $orderdetail): self
+    public function removeCommanddetail(CommandDetail $commanddetail): self
     {
-        if ($this->orderdetail->contains($orderdetail)) {
-            $this->orderdetail->removeElement($orderdetail);
+        if ($this->commanddetail->contains($commanddetail)) {
+            $this->commanddetail->removeElement($commanddetail);
             // set the owning side to null (unless already changed)
-            if ($orderdetail->getProduct() === $this) {
-                $orderdetail->setProduct(null);
+            if ($commanddetail->getProduct() === $this) {
+                $commanddetail->setProduct(null);
             }
         }
 
         return $this;
     }
-
 
 }
